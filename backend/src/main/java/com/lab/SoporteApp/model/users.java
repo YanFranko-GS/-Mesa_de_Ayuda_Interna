@@ -23,6 +23,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;  // AÑADIDO
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,17 +34,17 @@ import lombok.Setter;
 @Entity
 @Table(name = "usuarios")
 public class users {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(nullable = false , length = 100 , unique = false)
+
+    @Column(nullable = false, length = 100, unique = false)
     @NotBlank(message = "El nombre es OBLIGATORIO")
-    @Size(min = 3 , max = 100 , message = "El nombre debe tener entre 3 y 100 caracteres")
+    @Size(min = 3, max = 100, message = "El nombre debe tener entre 3 y 100 caracteres")
     private String nombre;
-    
-    @Column(nullable = false , length = 100 , unique = true)
+
+    @Column(nullable = false, length = 100, unique = true)
     @NotBlank(message = "El email es OBLIGATORIO")
     @Size(max = 150)
     private String email;
@@ -50,17 +52,16 @@ public class users {
     @Column(nullable = false)
     @NotBlank(message = "La contraseña es OBLIGATORIA")
     @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
-    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "El rol es obligatorio")
     @Column(nullable = false)
-     private Erol roluser;
+    private Erol roluser;
 
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    @JsonIgnore  // AÑADIDO: Evita la serialización recursiva
     private List<solicitud> solicitudes;
 
-    
 }

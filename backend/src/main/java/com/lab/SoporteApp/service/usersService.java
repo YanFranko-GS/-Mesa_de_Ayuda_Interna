@@ -19,7 +19,6 @@ public class usersService {
     @Autowired
     private PasswordEncoder encoder;
 
-    
     public users crear(users user) {
 
         if (user.getRoluser() == null) {
@@ -72,10 +71,9 @@ public class usersService {
         usersRepo.deleteById(id);
     }
 
-    public users crearUsuario(users u){
+    public users crearUsuario(users u) {
         u.setPassword(encoder.encode(u.getPassword()));
         return usersRepo.save(u);
     }
 
 }
-

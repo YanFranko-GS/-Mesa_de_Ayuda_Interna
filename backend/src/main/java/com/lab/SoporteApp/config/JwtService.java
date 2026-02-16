@@ -4,6 +4,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -17,23 +18,23 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
-    private final String SECRET_KEY = "=f5d5sM-zRRO]ToLw,mxLE[4G9DRPiXLsh][}O+xRLC{3;2G7d>/?7kmc-beFLTPW}n^l7eNQe_Sn1/eD}9!Tt";
+    @Value("${jwt.secret}")
+    private String secretKey;
 
     private Key getSignKey() {
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+        return Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
     public String generateToken(users user) {
         return Jwts.builder()
                 .setSubject(user.getEmail())
-                .claim("rol", user.getRoluser().name()) 
+                .claim("rol", user.getRoluser().name())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }

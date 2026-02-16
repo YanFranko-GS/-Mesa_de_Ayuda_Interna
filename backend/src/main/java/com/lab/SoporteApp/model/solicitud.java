@@ -1,6 +1,7 @@
 package com.lab.SoporteApp.model;
 
 import java.time.LocalDate;
+// import java.time.LocalDateTime;  // ELIMINADO
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lab.SoporteApp.model.enums.Eestado;
@@ -29,7 +30,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "solicitudes")
 public class solicitud {
-    
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
@@ -39,20 +40,16 @@ public class solicitud {
 
     @Enumerated(EnumType.STRING)
     private Eprioridad prioridad;
-    
+
     @Enumerated(EnumType.STRING)
     private Eestado estado;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id")
-    //@JsonIgnore
+    @JsonIgnore  // AÑADIDO: Evita la serialización recursiva
     private users usuario;
 
-
-
-
-    private LocalDate fechaCreacion;
-    private LocalDate fechaActualizacion;
+    private LocalDate fechaCreacion;      // CORREGIDO: Ahora es LocalDate
+    private LocalDate fechaActualizacion;  // CORREGIDO: Ahora es LocalDate
 
 }

@@ -28,15 +28,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         users user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con email: " + email));
 
-        
-
         return new org.springframework.security.core.userdetails.User(
-            user.getEmail(),
-            user.getPassword(),
-            List.of(new SimpleGrantedAuthority("ROLE_" + user.getRoluser().name()))
-            
+                user.getEmail(),
+                user.getPassword(),
+                List.of(new SimpleGrantedAuthority("ROLE_" + user.getRoluser().name()))
+
         );
-        
+
     }
 
 }

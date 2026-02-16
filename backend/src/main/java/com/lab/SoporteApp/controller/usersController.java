@@ -9,17 +9,18 @@ import com.lab.SoporteApp.model.users;
 import com.lab.SoporteApp.model.enums.Erol;
 import com.lab.SoporteApp.service.usersService;
 
+import jakarta.validation.Valid;  // AÑADIDO
+
 @RestController
 @RequestMapping("/api/usuarios")
-@CrossOrigin("*") 
+@CrossOrigin("*")
 public class usersController {
 
     @Autowired
     private usersService usersService;
 
-    
     @PostMapping
-    public users crear(@RequestBody users user) {
+    public users crear(@Valid @RequestBody users user) {  // AÑADIDO @Valid
         return usersService.crear(user);
     }
 
@@ -44,7 +45,7 @@ public class usersController {
     }
 
     @PutMapping("/{id}")
-    public users actualizar(@PathVariable Long id, @RequestBody users user) {
+    public users actualizar(@PathVariable Long id, @Valid @RequestBody users user) {  // AÑADIDO @Valid
         return usersService.actualizar(id, user);
     }
 
